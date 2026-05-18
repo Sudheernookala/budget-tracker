@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Budget">
-<link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="./manifest.json">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <title>Budget Tracker</title>
 <style>
@@ -509,7 +509,7 @@ function exportPDF() {
 
 // Register SW
 if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{ navigator.serviceWorker.register('/sw.js').catch(()=>{}); });
+  window.addEventListener('load',()=>{   navigator.serviceWorker.register('./sw.js').catch(()=>{}); });
 }
 
 init();
