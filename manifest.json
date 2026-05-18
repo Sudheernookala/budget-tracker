@@ -1,8 +1,10 @@
+
 {
   "name": "Monthly Budget Tracker",
   "short_name": "Budget",
   "description": "Track your monthly expenses by category",
-  "start_url": "/",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#f0f2f5",
   "theme_color": "#1b3a6b",
