@@ -1,9 +1,12 @@
+/ ⚠️ IMPORTANT: Change 'budget-tracker' to your actual GitHub repo name
+var GHPATH = '/budget-tracker';
+var CACHE_NAME = 'budget-tracker-v3';
 
-const CACHE_NAME = 'budget-tracker-v2';
-const ASSETS = [
-  './',
-  './index.html',
-  './manifest.json'
+var ASSETS = [
+  GHPATH + '/',
+  GHPATH + '/index.html',
+  GHPATH + '/manifest.json',
+  GHPATH + '/sw.js'
 ];
 
 // Install: cache all assets
