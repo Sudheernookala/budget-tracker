@@ -38,8 +38,8 @@ A simple monthly budget app built for your phone. Set a budget, log what you spe
 Your budget is used for every following month until you change it. When a month uses last month's budget, a blue note says **"Budget carried over from …"**. To change it from this month on, edit the numbers and save again.
 
 ### 3. Add your own category (optional)
-- **On the Budget tab:** scroll to **Add your own category**. Type a name, pick an emoji if you like, and tap **Add**.
-- **On the Log tab:** tap **+ New category** above the category list. The new category is selected for you.
+On the **Budget** tab, scroll to **Add your own category**. Type a name, pick an emoji if you like, and tap **Add**.
+The new category then appears automatically in the Log tab's category list and in the Summary.
 
 To remove a category you added, tap its **✕** on the Budget tab. You can only remove it once no expense uses it. The built-in categories can't be removed.
 

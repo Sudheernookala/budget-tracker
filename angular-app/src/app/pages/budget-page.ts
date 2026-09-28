@@ -63,7 +63,6 @@ export class BudgetPage {
   protected readonly catValues = signal<Record<string, number | null>>({});
 
   constructor() {
-    // Reload the form when the month (or saved budget) changes.
     // Reload the form when the month or the saved budget changes. When only a category was
     // added, keep what the user has typed but not saved yet.
     let lastSig = '';

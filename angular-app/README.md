@@ -12,8 +12,8 @@ It reads and writes the same browser storage (`bgt3`), so data entered in the ol
   Use the **+ / −** buttons next to the amount box (phone number keypads don't have them).
 - **Edit** – tap ✏️ Edit on any expense (Log tab or Summary drill-down) to change date,
   category, amount or note, or delete it.
-- **Custom categories** – add your own (name + optional emoji) on the Budget tab, or with
-  "+ New category" on the Log tab. They appear in the expense form, budgets, Summary and exports.
+- **Custom categories** – add your own (name + optional emoji) on the Budget tab.
+  They appear automatically in the expense form, budgets, Summary and exports.
   A custom category can be removed (✕ on the Budget tab) once it has no expenses.
 - **Summary** – tap a category (bar or legend) to see all its expenses for the month.
 - Export to PDF / copy as text. Installable as an app (PWA), works offline.

@@ -5,14 +5,13 @@ import { evalAmount, isCalculation } from '../core/amount-expr';
 import { DEFAULT_CATS, lastDayOfMonth, localDate } from '../core/models';
 import { ToastService } from '../core/toast.service';
 import { copyText, exportPdf } from '../core/export';
-import { AddCategory } from '../shared/add-category';
 import { AmountInput } from '../shared/amount-input';
 import { ExpenseItem } from '../shared/expense-item';
 import { ExpenseEditorService } from '../shared/expense-editor';
 
 @Component({
   selector: 'app-log-page',
-  imports: [FormsModule, AddCategory, AmountInput, ExpenseItem],
+  imports: [FormsModule, AmountInput, ExpenseItem],
   template: `
     <div class="card">
       <div class="card-header">➕ Add Expense</div>
@@ -23,24 +22,12 @@ import { ExpenseEditorService } from '../shared/expense-editor';
                  [min]="minDate()" [max]="maxDate()" [disabled]="store.readOnly()" />
         </div>
         <div class="form-row">
-          <div class="label-row">
-            <label class="form-label" for="expCat">Category</label>
-            @if (!store.readOnly()) {
-              <button type="button" class="link-btn" (click)="showNewCat.set(!showNewCat())">
-                {{ showNewCat() ? 'Cancel' : '+ New category' }}
-              </button>
-            }
-          </div>
+          <label class="form-label" for="expCat">Category</label>
           <select class="form-input" id="expCat" [(ngModel)]="cat" [disabled]="store.readOnly()">
             @for (c of store.categories(); track c.name) {
               <option [value]="c.name">{{ c.icon }} {{ c.name }}</option>
             }
           </select>
-          @if (showNewCat()) {
-            <div style="margin-top:8px">
-              <app-add-category (added)="cat.set($event); showNewCat.set(false)" />
-            </div>
-          }
         </div>
         <div class="form-row">
           <label class="form-label" for="expAmount">Amount (€)</label>
@@ -84,7 +71,6 @@ export class LogPage {
 
   protected readonly date = signal(localDate());
   protected readonly cat = signal(DEFAULT_CATS[0].name);
-  protected readonly showNewCat = signal(false);
   protected readonly amountText = signal('');
   protected readonly note = signal('');
 
