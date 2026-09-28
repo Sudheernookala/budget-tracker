@@ -28,8 +28,8 @@ type Tab = 'budget' | 'summary' | 'log';
     <main class="pages">
       @switch (tab()) {
         @case ('budget') { <app-budget-page class="page" /> }
-        @case ('summary') { <app-summary-page class="page" /> }
         @case ('log') { <app-log-page class="page" /> }
+        @case ('summary') { <app-summary-page class="page" /> }
       }
     </main>
 
@@ -55,7 +55,7 @@ export class App {
   protected readonly label = computed(() => monthLabel(this.store.viewKey()));
   protected readonly tabs: { id: Tab; icon: string; label: string }[] = [
     { id: 'budget', icon: '⚙️', label: 'Budget' },
-    { id: 'summary', icon: '📈', label: 'Summary' },
     { id: 'log', icon: '🧾', label: 'Log' },
+    { id: 'summary', icon: '📈', label: 'Summary' },
   ];
 }
