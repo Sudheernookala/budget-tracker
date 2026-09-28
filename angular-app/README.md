@@ -1,4 +1,6 @@
-# Budget Tracker (Angular)
+# Budget Tracker (Angular) — developer notes
+
+For what the app does and how to use it, see the [main README](../README.md).
 
 Mobile-first Angular version of the budget tracker in the repo root (`../index.html`).
 It reads and writes the same browser storage (`bgt3`), so data entered in the old app shows up here.
