@@ -1,12 +1,12 @@
 import { BudgetStore } from './budget.store';
-import { CATS, monthLabel } from './models';
+import { monthLabel } from './models';
 
 export async function copyText(store: BudgetStore): Promise<void> {
   const { total, byCat, budget } = store.totals();
   const line = '─'.repeat(38);
   let txt = `Budget Tracker — ${monthLabel(store.viewKey())}\n`;
   txt += `${line}\nSpent: €${total.toFixed(2)} / Budget: €${budget.toFixed(2)}\n${line}\n`;
-  CATS.filter((c) => byCat[c.name] > 0).forEach((c) => (txt += `${c.name}: €${byCat[c.name].toFixed(2)}\n`));
+  store.categories().filter((c) => byCat[c.name] > 0).forEach((c) => (txt += `${c.name}: €${byCat[c.name].toFixed(2)}\n`));
   txt += `${line}\n`;
   store.expenses().forEach((e) => (txt += `${e.date} | ${e.cat} | €${e.amount.toFixed(2)}${e.note ? ' | ' + e.note : ''}\n`));
   await navigator.clipboard.writeText(txt);
@@ -51,7 +51,7 @@ export async function exportPdf(store: BudgetStore): Promise<void> {
 
   doc.setTextColor(...black); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
   doc.text('Category Breakdown', 14, y); y += 6;
-  CATS.filter((c) => byCat[c.name] > 0 || catBudgets[c.name] > 0).forEach((c) => {
+  store.categories().filter((c) => byCat[c.name] > 0 || catBudgets[c.name] > 0).forEach((c) => {
     const spent = byCat[c.name] || 0, limit = catBudgets[c.name] || 0;
     const r = parseInt(c.color.slice(1, 3), 16), g = parseInt(c.color.slice(3, 5), 16), b = parseInt(c.color.slice(5, 7), 16);
     doc.setFillColor(r, g, b); doc.circle(17, y + 2, 2, 'F');

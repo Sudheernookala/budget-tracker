@@ -51,4 +51,34 @@ describe('BudgetStore', () => {
     store.addExpense({ date: `${keyOffset(-1)}-01`, cat: 'Food', amount: 1, note: '' });
     expect(store.expenses().length).toBe(0);
   });
+
+  it('adds custom categories that show up in budgets and totals', () => {
+    const store = new BudgetStore();
+    expect(store.addCategory('  Kids ', '🧸')).toBeNull();
+    expect(store.addCategory('kids', '')).toContain('already exists');
+    expect(store.addCategory('', '')).toBe('Enter a category name');
+    expect(store.categories().at(-1)).toEqual(catLike('Kids', '🧸'));
+
+    store.saveBudget({ totalBudget: 100, catBudgets: { Kids: 40 } });
+    store.addExpense({ date: `${store.currentKey}-02`, cat: 'Kids', amount: 12.5, note: '' });
+    expect(store.totals().catBudgets['Kids']).toBe(40);
+    expect(store.totals().byCat['Kids']).toBe(12.5);
+
+    // Survives a reload.
+    expect(new BudgetStore().categories().some((c) => c.name === 'Kids')).toBe(true);
+  });
+
+  it('only removes a category that has no expenses', () => {
+    const store = new BudgetStore();
+    store.addCategory('Pets', '');
+    store.addExpense({ date: `${store.currentKey}-02`, cat: 'Pets', amount: 3, note: '' });
+    expect(store.removeCategory('Pets')).toContain('has expenses');
+    store.deleteExpense(store.expenses()[0].id);
+    expect(store.removeCategory('Pets')).toBeNull();
+    expect(store.isCustomCategory('Pets')).toBe(false);
+  });
 });
+
+function catLike(name: string, icon: string) {
+  return expect.objectContaining({ name, icon });
+}

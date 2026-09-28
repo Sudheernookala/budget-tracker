@@ -2,16 +2,17 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BudgetStore } from '../core/budget.store';
 import { evalAmount, isCalculation } from '../core/amount-expr';
-import { CATS, lastDayOfMonth, localDate } from '../core/models';
+import { DEFAULT_CATS, lastDayOfMonth, localDate } from '../core/models';
 import { ToastService } from '../core/toast.service';
 import { copyText, exportPdf } from '../core/export';
+import { AddCategory } from '../shared/add-category';
 import { AmountInput } from '../shared/amount-input';
 import { ExpenseItem } from '../shared/expense-item';
 import { ExpenseEditorService } from '../shared/expense-editor';
 
 @Component({
   selector: 'app-log-page',
-  imports: [FormsModule, AmountInput, ExpenseItem],
+  imports: [FormsModule, AddCategory, AmountInput, ExpenseItem],
   template: `
     <div class="card">
       <div class="card-header">➕ Add Expense</div>
@@ -22,12 +23,24 @@ import { ExpenseEditorService } from '../shared/expense-editor';
                  [min]="minDate()" [max]="maxDate()" [disabled]="store.readOnly()" />
         </div>
         <div class="form-row">
-          <label class="form-label" for="expCat">Category</label>
+          <div class="label-row">
+            <label class="form-label" for="expCat">Category</label>
+            @if (!store.readOnly()) {
+              <button type="button" class="link-btn" (click)="showNewCat.set(!showNewCat())">
+                {{ showNewCat() ? 'Cancel' : '+ New category' }}
+              </button>
+            }
+          </div>
           <select class="form-input" id="expCat" [(ngModel)]="cat" [disabled]="store.readOnly()">
-            @for (c of cats; track c.name) {
+            @for (c of store.categories(); track c.name) {
               <option [value]="c.name">{{ c.icon }} {{ c.name }}</option>
             }
           </select>
+          @if (showNewCat()) {
+            <div style="margin-top:8px">
+              <app-add-category (added)="cat.set($event); showNewCat.set(false)" />
+            </div>
+          }
         </div>
         <div class="form-row">
           <label class="form-label" for="expAmount">Amount (€)</label>
@@ -68,10 +81,10 @@ export class LogPage {
   protected readonly store = inject(BudgetStore);
   protected readonly editor = inject(ExpenseEditorService);
   private readonly toast = inject(ToastService);
-  protected readonly cats = CATS;
 
   protected readonly date = signal(localDate());
-  protected readonly cat = signal(CATS[0].name);
+  protected readonly cat = signal(DEFAULT_CATS[0].name);
+  protected readonly showNewCat = signal(false);
   protected readonly amountText = signal('');
   protected readonly note = signal('');
 

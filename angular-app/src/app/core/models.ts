@@ -4,7 +4,8 @@ export interface Category {
   icon: string;
 }
 
-export const CATS: Category[] = [
+/** Built-in categories. User-added ones are stored separately (see BudgetStore). */
+export const DEFAULT_CATS: Category[] = [
   { name: 'Housing', color: '#1b3a6b', icon: '🏠' },
   { name: 'Food', color: '#2980b9', icon: '🍔' },
   { name: 'Transport', color: '#16a085', icon: '🚗' },
@@ -15,11 +16,8 @@ export const CATS: Category[] = [
   { name: 'Other', color: '#7f8c8d', icon: '📦' },
 ];
 
-const FALLBACK_CAT: Category = { name: 'Other', color: '#94a3b8', icon: '📦' };
-
-export function catInfo(name: string): Category {
-  return CATS.find((c) => c.name === name) ?? { ...FALLBACK_CAT, name };
-}
+/** Colours handed out to new categories, in order. */
+export const CUSTOM_CAT_COLORS = ['#d946ef', '#0ea5e9', '#ca8a04', '#65a30d', '#e11d48', '#0d9488', '#6366f1', '#db2777'];
 
 export interface Expense {
   id: number;

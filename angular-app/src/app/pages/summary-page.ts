@@ -1,6 +1,6 @@
 import { Component, ElementRef, computed, effect, inject, signal, viewChild } from '@angular/core';
 import { BudgetStore } from '../core/budget.store';
-import { CATS, Category, catInfo } from '../core/models';
+import { Category } from '../core/models';
 import { ExpenseItem } from '../shared/expense-item';
 import { ExpenseEditorService } from '../shared/expense-editor';
 
@@ -104,9 +104,9 @@ export class SummaryPage {
   protected readonly selected = signal<string | null>(null);
 
   protected readonly pct = computed(() => (this.t().budget > 0 ? Math.min(this.t().total / this.t().budget, 1) : 0));
-  protected readonly spentCats = computed(() => CATS.filter((c) => this.t().byCat[c.name] > 0));
+  protected readonly spentCats = computed(() => this.store.categories().filter((c) => this.t().byCat[c.name] > 0));
   protected readonly barCats = computed(() =>
-    CATS.filter((c) => this.t().byCat[c.name] > 0 || this.t().catBudgets[c.name] > 0),
+    this.store.categories().filter((c) => this.t().byCat[c.name] > 0 || this.t().catBudgets[c.name] > 0),
   );
   protected readonly selectedExpenses = computed(() => {
     const sel = this.selected();
@@ -183,11 +183,11 @@ export class SummaryPage {
     }
 
     let start = -Math.PI / 2;
-    for (const c of CATS.filter((c) => byCat[c.name] > 0)) {
+    for (const c of this.spentCats()) {
       const slice = (byCat[c.name] / total) * Math.PI * 2;
       ctx.beginPath(); ctx.moveTo(cx, cy);
       ctx.arc(cx, cy, r, start, start + slice); ctx.closePath();
-      ctx.fillStyle = catInfo(c.name).color; ctx.fill();
+      ctx.fillStyle = c.color; ctx.fill();
       ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
       start += slice;
     }

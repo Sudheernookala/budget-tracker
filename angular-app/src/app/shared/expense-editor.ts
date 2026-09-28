@@ -2,7 +2,7 @@ import { Component, Injectable, computed, effect, inject, signal } from '@angula
 import { FormsModule } from '@angular/forms';
 import { BudgetStore } from '../core/budget.store';
 import { evalAmount, isCalculation } from '../core/amount-expr';
-import { CATS, Expense, lastDayOfMonth } from '../core/models';
+import { Expense, lastDayOfMonth } from '../core/models';
 import { ToastService } from '../core/toast.service';
 import { AmountInput } from './amount-input';
 
@@ -36,7 +36,7 @@ export class ExpenseEditorService {
         <div class="form-row">
           <label class="form-label" for="edCat">Category</label>
           <select class="form-input" id="edCat" [(ngModel)]="cat">
-            @for (c of cats; track c.name) {
+            @for (c of store.categories(); track c.name) {
               <option [value]="c.name">{{ c.icon }} {{ c.name }}</option>
             }
           </select>
@@ -61,9 +61,8 @@ export class ExpenseEditorService {
 })
 export class ExpenseEditor {
   protected readonly editor = inject(ExpenseEditorService);
-  private readonly store = inject(BudgetStore);
+  protected readonly store = inject(BudgetStore);
   private readonly toast = inject(ToastService);
-  protected readonly cats = CATS;
 
   protected readonly date = signal('');
   protected readonly cat = signal('');

@@ -1,5 +1,6 @@
-import { Component, computed, input, output } from '@angular/core';
-import { Expense, catInfo } from '../core/models';
+import { Component, computed, inject, input, output } from '@angular/core';
+import { BudgetStore } from '../core/budget.store';
+import { Expense } from '../core/models';
 
 @Component({
   selector: 'app-expense-item',
@@ -29,5 +30,6 @@ export class ExpenseItem {
   readonly expense = input.required<Expense>();
   readonly editable = input(false);
   readonly edit = output<Expense>();
-  protected readonly cat = computed(() => catInfo(this.expense().cat));
+  private readonly store = inject(BudgetStore);
+  protected readonly cat = computed(() => this.store.catInfo(this.expense().cat));
 }
