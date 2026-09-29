@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BudgetStore } from '../core/budget.store';
 import { evalAmount, isCalculation } from '../core/amount-expr';
-import { DEFAULT_CATS, lastDayOfMonth, localDate } from '../core/models';
+import { DEFAULT_CATS, lastDayOfMonth, localDate, monthLabel } from '../core/models';
 import { ToastService } from '../core/toast.service';
 import { copyText, exportPdf } from '../core/export';
 import { AmountInput } from '../shared/amount-input';
@@ -16,14 +16,17 @@ import { ExpenseEditorService } from '../shared/expense-editor';
     <div class="card">
       <div class="card-header">➕ Add Expense</div>
       <div class="card-body">
+        @if (store.readOnly()) {
+          <div class="info-banner" style="margin-bottom:11px">📅 Adding to {{ monthName() }} (a past month)</div>
+        }
         <div class="form-row">
           <label class="form-label" for="expDate">Date</label>
           <input class="form-input" type="date" id="expDate" [(ngModel)]="date"
-                 [min]="minDate()" [max]="maxDate()" [disabled]="store.readOnly()" />
+                 [min]="minDate()" [max]="maxDate()" />
         </div>
         <div class="form-row">
           <label class="form-label" for="expCat">Category</label>
-          <select class="form-input" id="expCat" [(ngModel)]="cat" [disabled]="store.readOnly()">
+          <select class="form-input" id="expCat" [(ngModel)]="cat">
             @for (c of store.categories(); track c.name) {
               <option [value]="c.name">{{ c.icon }} {{ c.name }}</option>
             }
@@ -31,14 +34,14 @@ import { ExpenseEditorService } from '../shared/expense-editor';
         </div>
         <div class="form-row">
           <label class="form-label" for="expAmount">Amount (€)</label>
-          <app-amount-input inputId="expAmount" [(value)]="amountText" [disabled]="store.readOnly()" />
+          <app-amount-input inputId="expAmount" [(value)]="amountText" />
         </div>
         <div class="form-row">
           <label class="form-label" for="expNote">Note (optional)</label>
           <input class="form-input" type="text" id="expNote" placeholder="e.g. Grocery run"
-                 [(ngModel)]="note" [disabled]="store.readOnly()" />
+                 [(ngModel)]="note" />
         </div>
-        <button class="btn btn-green" style="margin-top:4px" (click)="add()" [disabled]="store.readOnly()">+ Add Expense</button>
+        <button class="btn btn-green" style="margin-top:4px" (click)="add()">+ Add Expense</button>
       </div>
     </div>
 
@@ -46,7 +49,7 @@ import { ExpenseEditorService } from '../shared/expense-editor';
       <div class="card-header">🧾 Expense Log</div>
       <div class="card-body">
         @for (e of store.expenses(); track e.id) {
-          <app-expense-item [expense]="e" [editable]="!store.readOnly()" (edit)="editor.open($event)" />
+          <app-expense-item [expense]="e" [editable]="true" (edit)="editor.open($event)" />
         } @empty {
           <div class="empty"><div class="empty-icon">🧾</div><div class="empty-text">No expenses this month</div></div>
         }
@@ -76,11 +79,12 @@ export class LogPage {
 
   protected readonly minDate = computed(() => `${this.store.viewKey()}-01`);
   protected readonly maxDate = computed(() => lastDayOfMonth(this.store.viewKey()));
+  protected readonly monthName = computed(() => monthLabel(this.store.viewKey()));
 
   constructor() {
-    // Default the date to today when on the current month.
+    // Default the date to today, or to the 1st when viewing a past month.
     effect(() => {
-      if (this.store.isCurrentMonth()) this.date.set(localDate());
+      this.date.set(this.store.isCurrentMonth() ? localDate() : this.minDate());
     });
   }
 

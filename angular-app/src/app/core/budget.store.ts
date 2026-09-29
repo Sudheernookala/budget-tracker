@@ -56,6 +56,7 @@ export class BudgetStore {
   readonly categories = computed(() => [...DEFAULT_CATS, ...this.customCats()]);
 
   readonly isCurrentMonth = computed(() => this.viewKey() === this.currentKey);
+  /** Budgets can only be changed for the current month. Expenses can be added to any month. */
   readonly readOnly = computed(() => !this.isCurrentMonth());
 
   private readonly monthRaw = computed(() => this.state()[this.viewKey()] ?? emptyMonth());
@@ -145,8 +146,9 @@ export class BudgetStore {
     this.viewKey.set(next);
   }
 
-  // ── Mutations (current month only, like the original app) ────────────────
+  // ── Mutations ─────────────────────────────────────────────────────────────
   saveBudget(budget: Budget): void {
+    if (this.readOnly()) return; // past budgets stay as they were
     this.updateMonth((m) => ({ ...m, totalBudget: budget.totalBudget, catBudgets: withAllCats(this.categories(), budget.catBudgets), budgetSet: true }));
   }
 
@@ -163,7 +165,6 @@ export class BudgetStore {
   }
 
   private updateMonth(fn: (m: MonthData) => MonthData): void {
-    if (this.readOnly()) return;
     const ym = this.viewKey();
     // Re-read storage first so we never overwrite changes made in another tab.
     const s = { ...loadState() };

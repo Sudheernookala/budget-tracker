@@ -17,7 +17,7 @@ It reads and writes the same browser storage (`bgt3`), so data entered in the ol
   A custom category can be removed (✕ on the Budget tab) once it has no expenses.
 - **Summary** – tap a category (bar or legend) to see all its expenses for the month.
 - Export to PDF / copy as text. Installable as an app (PWA), works offline.
-- Past months are read-only, as before.
+- Past months: expenses can be added, edited and deleted; the budget is read-only.
 
 ## Develop
 ```bash

@@ -73,7 +73,7 @@ import { ExpenseEditorService } from '../shared/expense-editor';
           @if (selected() === c.name) {
             <div class="cat-detail">
               @for (e of selectedExpenses(); track e.id) {
-                <app-expense-item [expense]="e" [editable]="!store.readOnly()" (edit)="editor.open($event)" />
+                <app-expense-item [expense]="e" [editable]="true" (edit)="editor.open($event)" />
               } @empty {
                 <div class="empty-text" style="padding:10px 0;text-align:center;color:#94a3b8">No {{ c.name }} expenses this month</div>
               }

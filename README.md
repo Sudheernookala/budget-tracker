@@ -16,11 +16,11 @@ A simple monthly budget app built for your phone. Set a budget, log what you spe
 - **Budgets carry over:** next month uses this month's budget automatically. You don't have to enter it again.
 - **Calculator in the amount box:** type `2.03+3.56` and it saves **€5.59**. Plus and minus both work.
 - **Your own categories:** add categories like "Kids" or "Gym", with an emoji of your choice.
-- **Edit or delete expenses:** fix a wrong amount, date, category or note at any time during the month.
+- **Edit or delete expenses:** fix a wrong amount, date, category or note at any time, in any month.
 - **Summary with drill-down:** see a pie chart and a bar for each category. Tap a category to see every expense in it.
 - **Warnings:** the app tells you when you reach 85% of your budget, and when you go over it.
 - **Export:** download the month as a PDF, or copy it as text to share.
-- **Past months:** use the ← arrow to look back at earlier months. They are read-only.
+- **Past months:** use the ← arrow to go back to an earlier month. You can add, edit or delete its expenses. Its budget stays locked.
 
 ---
 
@@ -71,7 +71,8 @@ On the Log tab, tap **⬇ PDF** to download the month, or **📋 Copy** to copy 
 
 - **Data is saved only in this browser, on this device.** It doesn't sync between your phone and your computer.
 - **Clearing your browser data, or uninstalling the browser, deletes your budget and expenses.** Export a PDF regularly if the history matters to you.
-- **Past months are read-only.** You can view them but not change them.
+- **Forgot to log something last month?** Tap ← to go to that month, then add it on the Log tab. The date is limited to that month.
+- **Past budgets are locked.** You can change a budget only for the current month.
 - **Amounts are in euros (€).**
 
 ---

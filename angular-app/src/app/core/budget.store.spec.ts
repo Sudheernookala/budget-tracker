@@ -45,10 +45,18 @@ describe('BudgetStore', () => {
     expect(saved[store.currentKey].expenses[0].amount).toBe(7);
   });
 
-  it('does not change past months', () => {
+  it('allows expenses in past months but keeps their budget locked', () => {
     const store = new BudgetStore();
     store.changeMonth(-1);
-    store.addExpense({ date: `${keyOffset(-1)}-01`, cat: 'Food', amount: 1, note: '' });
+    store.addExpense({ date: `${keyOffset(-1)}-05`, cat: 'Food', amount: 7, note: '' });
+    expect(store.expenses().length).toBe(1);
+    expect(store.totals().total).toBe(7);
+
+    store.saveBudget({ totalBudget: 999, catBudgets: {} });
+    expect(store.totals().budget).toBe(0);
+
+    // The expense landed in the past month, not the current one.
+    store.changeMonth(1);
     expect(store.expenses().length).toBe(0);
   });
 

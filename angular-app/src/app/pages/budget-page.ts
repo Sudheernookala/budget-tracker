@@ -10,7 +10,7 @@ import { AddCategory } from '../shared/add-category';
   imports: [FormsModule, AddCategory],
   template: `
     @if (store.readOnly()) {
-      <div class="readonly-banner">⚠️ Viewing past month — read only</div>
+      <div class="readonly-banner">⚠️ Past month — budget is read only. You can still add or edit expenses in the Log tab.</div>
     }
 
     @if (carriedFrom(); as from) {
