@@ -81,5 +81,6 @@ On the Log tab, tap **⬇ PDF** to download the month, or **📋 Copy** to copy 
 
 The app is built with **Angular** and lives in [`angular-app/`](angular-app/). See [`angular-app/README.md`](angular-app/README.md) for how to run, test and build it.
 
-- Every push to `Dev` or `main` that changes `angular-app/` is built, tested and published to GitHub Pages by [`.github/workflows/deploy-angular.yml`](.github/workflows/deploy-angular.yml).
-- The `index.html`, `manifest.json` and `sw.js` files in the repo root are the **old single-file version** of the app. They are kept for reference and are not what the live site serves.
+- The files in the repo root (`index.html`, `main-*.js`, `chunk-*.js`, `ngsw*`, `icons/` …) are the **built app**, created by `npm run publish:root`. Don't edit them by hand. After changing code in `angular-app/`, run that command and commit the result.
+- Every push to `Dev` or `main` is tested and published by [`.github/workflows/deploy-angular.yml`](.github/workflows/deploy-angular.yml). It fails if the root build is out of date.
+- The old single-file version of the app is kept in [`legacy/`](legacy/) for reference.

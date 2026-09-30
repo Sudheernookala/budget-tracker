@@ -28,6 +28,13 @@ npx ng build --base-href /budget-tracker/
 ```
 
 ## Deploy
-`.github/workflows/deploy-angular.yml` builds and publishes to GitHub Pages on every push to `main`
-that touches `angular-app/`. One-time setup: **Settings → Pages → Source → GitHub Actions**.
-After that switch, the Angular app replaces the old `index.html` at the same URL.
+After any code change, run this and commit the changed files in the repo root:
+```bash
+npm run publish:root
+```
+It builds the app and copies it to the repo root, so GitHub Pages serves the new app even when
+Pages is set to "Deploy from a branch". `.pages-files` lists what it put there.
+
+`.github/workflows/deploy-angular.yml` runs the tests on every push to `Dev` or `main`, checks
+that the root build is up to date, and publishes it. Recommended setting:
+**Settings → Pages → Source → GitHub Actions**.

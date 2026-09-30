@@ -1,0 +1,89 @@
+{
+  "configVersion": 1,
+  "timestamp": 1790769817181,
+  "index": "/budget-tracker/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/budget-tracker/chunk-FK6H3RFT.js",
+        "/budget-tracker/chunk-GSEQISYX.js",
+        "/budget-tracker/chunk-GUIX2LQD.js",
+        "/budget-tracker/chunk-GXAQDK3Q.js",
+        "/budget-tracker/chunk-TQPZRHFO.js",
+        "/budget-tracker/chunk-XO35LTWQ.js",
+        "/budget-tracker/index.html",
+        "/budget-tracker/main-IA4DHETA.js",
+        "/budget-tracker/manifest.webmanifest",
+        "/budget-tracker/styles-B2WOCITL.css",
+        "/budget-tracker/sw.js"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/budget-tracker/icons/icon-128x128.png",
+        "/budget-tracker/icons/icon-144x144.png",
+        "/budget-tracker/icons/icon-152x152.png",
+        "/budget-tracker/icons/icon-192x192.png",
+        "/budget-tracker/icons/icon-384x384.png",
+        "/budget-tracker/icons/icon-512x512.png",
+        "/budget-tracker/icons/icon-72x72.png",
+        "/budget-tracker/icons/icon-96x96.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/budget-tracker/chunk-FK6H3RFT.js": "3c538698719f1cf34410542b8c702bc484e025ee",
+    "/budget-tracker/chunk-GSEQISYX.js": "e99c986de5e73740a083bf1de90e147a00c6168e",
+    "/budget-tracker/chunk-GUIX2LQD.js": "4c9135c21792b63648127fdb6ada24907ef6f5ad",
+    "/budget-tracker/chunk-GXAQDK3Q.js": "4a68bede698e3fb83eed8ca306a8faec6346f9ad",
+    "/budget-tracker/chunk-TQPZRHFO.js": "21485bed55b9ed286cd2dd8ed756033b76ccd730",
+    "/budget-tracker/chunk-XO35LTWQ.js": "8983be10b3a44b89769c4c43febb7d51c51a255c",
+    "/budget-tracker/icons/icon-128x128.png": "ebb01ff4cecb917268ea8af09aedfddf4f5601dd",
+    "/budget-tracker/icons/icon-144x144.png": "1ea359c74f5483c059ea966345f29833f51aa27f",
+    "/budget-tracker/icons/icon-152x152.png": "c16e1e966dbca8dd94c20db9cef63bcde30a5e51",
+    "/budget-tracker/icons/icon-192x192.png": "62f2668ace41d151fe045d559293e94b8251f26d",
+    "/budget-tracker/icons/icon-384x384.png": "4909d2f806253408f0d61b4fcd642b6b22327d8e",
+    "/budget-tracker/icons/icon-512x512.png": "8036c14829b56d31516267d5a0958736e05d588f",
+    "/budget-tracker/icons/icon-72x72.png": "34789ee363f22704b7981a21e661ebf6951e0b3c",
+    "/budget-tracker/icons/icon-96x96.png": "12019be206803d8cc7ade4ddb877692bc6fb990d",
+    "/budget-tracker/index.html": "4eaaea497cb08b3145b02404dc0fbdba4155f5de",
+    "/budget-tracker/main-IA4DHETA.js": "e6f30f4407454b0bc8a21166f501ffe1b7ac4bf2",
+    "/budget-tracker/manifest.webmanifest": "b4b2791861cd9671a53864a5e3296b7d188b2648",
+    "/budget-tracker/styles-B2WOCITL.css": "ba113ee3709cadf49ffed91d9233d7af3e18c24a",
+    "/budget-tracker/sw.js": "766e46b425dbcd7372622f349dcbb14730ebe0bb"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}

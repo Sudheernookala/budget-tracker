@@ -1,11 +1,12 @@
 name: Deploy Angular app to GitHub Pages
 
-# Builds angular-app/ and publishes it at https://<user>.github.io/budget-tracker/
-# One-time setup: repo Settings → Pages → Source = "GitHub Actions".
+# Tests angular-app/ and publishes it at https://<user>.github.io/budget-tracker/
+# Recommended: repo Settings → Pages → Source = "GitHub Actions". With "Deploy from a branch"
+# the site still works, because the built app is committed to the repo root.
 on:
   push:
     branches: [main, Dev]
-    paths: ['angular-app/**', '.github/workflows/deploy-angular.yml']
+    paths: ['angular-app/**', '.pages-files', '.github/workflows/deploy-angular.yml']
   workflow_dispatch:
 
 permissions:
@@ -33,11 +34,28 @@ jobs:
       - run: npm ci
       - run: npx ng test --watch=false
       - run: npx ng build --base-href /budget-tracker/
-      # Serve index.html for unknown paths too.
-      - run: cp dist/budget-app/browser/index.html dist/budget-app/browser/404.html
+      # The built app is also committed to the repo root (npm run publish:root) so the site is
+      # right even when Pages is set to "Deploy from a branch". Fail if that copy is out of date.
+      - name: Check the committed build in the repo root is up to date
+        run: |
+          cd dist/budget-app/browser
+          stale=0
+          for f in $(find . -type f ! -name ngsw.json | sed 's|^\./||'); do
+            cmp -s "$f" "../../../../$f" || { echo "Out of date: $f"; stale=1; }
+          done
+          if [ "$stale" = 1 ]; then
+            echo "::error::Root build is stale. Run 'npm run publish:root' in angular-app/ and commit the result."
+            exit 1
+          fi
+      # Publish exactly the committed files, so both ways of deploying serve the same bytes.
+      - name: Collect the published files
+        working-directory: .
+        run: |
+          mkdir -p _site
+          xargs -a .pages-files -I{} cp -r {} _site/
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: angular-app/dist/budget-app/browser
+          path: _site
 
   deploy:
     needs: build
