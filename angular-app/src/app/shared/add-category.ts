@@ -34,7 +34,7 @@ export class AddCategory {
       this.toast.show(err, 'err');
       return;
     }
-    const name = this.store.categories().at(-1)!.name;
+    const name = this.name().trim().replace(/\s+/g, ' ');
     this.name.set('');
     this.icon.set('');
     this.toast.show(`Category "${name}" added ✓`);

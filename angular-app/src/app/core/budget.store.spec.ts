@@ -80,10 +80,32 @@ describe('BudgetStore', () => {
     const store = new BudgetStore();
     store.addCategory('Pets', '');
     store.addExpense({ date: `${store.currentKey}-02`, cat: 'Pets', amount: 3, note: '' });
-    expect(store.removeCategory('Pets')).toContain('has expenses');
+    expect(store.removeCategory('Pets')).toContain('has expenses this month');
     store.deleteExpense(store.expenses()[0].id);
     expect(store.removeCategory('Pets')).toBeNull();
     expect(store.isCustomCategory('Pets')).toBe(false);
+    expect(localStorage.getItem('bgt3-cats')).not.toContain('Pets');
+  });
+
+  it('removes a category used last month from this month on, keeping last month intact', () => {
+    const store = new BudgetStore();
+    store.addCategory('Gym', '');
+    store.changeMonth(-1);
+    store.addExpense({ date: `${keyOffset(-1)}-10`, cat: 'Gym', amount: 30, note: '' });
+    store.changeMonth(1);
+
+    expect(store.removeCategory('Gym')).toBeNull();
+    expect(store.categories().some((c) => c.name === 'Gym')).toBe(false);
+
+    // Last month still shows it, with its expense.
+    store.changeMonth(-1);
+    expect(store.isCustomCategory('Gym')).toBe(true);
+    expect(store.totals().byCat['Gym']).toBe(30);
+
+    // Adding it again brings back the same category instead of a duplicate.
+    store.changeMonth(1);
+    expect(store.addCategory('gym', '')).toBeNull();
+    expect(store.categories().filter((c) => c.name === 'Gym').length).toBe(1);
   });
 });
 

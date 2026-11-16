@@ -52,8 +52,11 @@ export class BudgetStore {
   readonly viewKey = signal(this.currentKey);
 
   private readonly customCats = signal<Category[]>(loadCustomCats());
-  /** Built-in categories followed by the user's own. */
-  readonly categories = computed(() => [...DEFAULT_CATS, ...this.customCats()]);
+  /** Built-in categories followed by the user's own that are in use for the month being viewed. */
+  readonly categories = computed(() => {
+    const ym = this.viewKey();
+    return [...DEFAULT_CATS, ...this.customCats().filter((c) => !c.hiddenFrom || ym < c.hiddenFrom)];
+  });
 
   readonly isCurrentMonth = computed(() => this.viewKey() === this.currentKey);
   /** Budgets can only be changed for the current month. Expenses can be added to any month. */
@@ -104,8 +107,9 @@ export class BudgetStore {
     return this.categories().find((c) => c.name === name) ?? { name, color: '#94a3b8', icon: '🏷️' };
   }
 
+  /** A user-added category shown in the month being viewed. */
   isCustomCategory(name: string): boolean {
-    return this.customCats().some((c) => c.name === name);
+    return this.categories().some((c) => c.name === name && !DEFAULT_CATS.includes(c));
   }
 
   /** Adds a category for all months. Returns an error message, or null on success. */
@@ -114,17 +118,36 @@ export class BudgetStore {
     if (!name) return 'Enter a category name';
     if (name.length > 20) return 'Name is too long (max 20 characters)';
     if (this.categories().some((c) => c.name.toLowerCase() === name.toLowerCase())) return `"${name}" already exists`;
+    // Adding back a category removed earlier: show it again instead of making a duplicate.
+    const removed = this.customCats().find((c) => c.name.toLowerCase() === name.toLowerCase());
+    if (removed) {
+      this.saveCustomCats(this.customCats().map((c) => (c === removed ? { name: c.name, icon: c.icon, color: c.color } : c)));
+      return null;
+    }
     const icon = [...rawIcon.trim()].slice(0, 2).join('') || '🏷️';
     const color = CUSTOM_CAT_COLORS[this.customCats().length % CUSTOM_CAT_COLORS.length];
     this.saveCustomCats([...this.customCats(), { name, icon, color }]);
     return null;
   }
 
-  /** Removes a user-added category. Refused while any month still has expenses in it. */
+  /**
+   * Removes a user-added category from the current month onward.
+   * - Never used: deleted completely.
+   * - Used only in earlier months: hidden from now on, but kept in those months so their
+   *   expenses and totals stay the same.
+   * - Used this month: refused, because those expenses would lose their category.
+   */
   removeCategory(name: string): string | null {
-    const used = Object.values(loadState()).some((m) => m.expenses?.some((e) => e.cat === name));
-    if (used) return `"${name}" has expenses — edit or delete them first`;
-    this.saveCustomCats(this.customCats().filter((c) => c.name !== name));
+    const state = loadState();
+    const from = this.currentKey;
+    const usedFrom = Object.entries(state).some(([k, m]) => k >= from && m.expenses?.some((e) => e.cat === name));
+    if (usedFrom) return `"${name}" has expenses this month. Move them to another category or delete them first.`;
+    const usedBefore = Object.values(state).some((m) => m.expenses?.some((e) => e.cat === name));
+    this.saveCustomCats(
+      usedBefore
+        ? this.customCats().map((c) => (c.name === name ? { ...c, hiddenFrom: from } : c))
+        : this.customCats().filter((c) => c.name !== name),
+    );
     return null;
   }
 

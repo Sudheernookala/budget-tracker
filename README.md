@@ -41,7 +41,7 @@ Your budget is used for every following month until you change it. When a month 
 On the **Budget** tab, scroll to **Add your own category**. Type a name, pick an emoji if you like, and tap **Add**.
 The new category then appears automatically in the Log tab's category list and in the Summary.
 
-To remove a category you added, tap its **✕** on the Budget tab. You can only remove it once no expense uses it. The built-in categories can't be removed.
+To stop using a category you added, tap its **✕** on the Budget tab. It disappears from this month onward. Earlier months keep it, along with their expenses and totals. If this month already has expenses in it, move them to another category or delete them first. To use it again later, just add it again with the same name. The built-in categories can't be removed.
 
 ### 4. Log an expense (🧾 Log tab)
 1. Check the **date** (today is filled in for you).

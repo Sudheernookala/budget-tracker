@@ -92,9 +92,9 @@ export class BudgetPage {
   }
 
   protected remove(name: string): void {
-    if (!confirm(`Remove category "${name}"?`)) return;
+    if (!confirm(`Remove "${name}" from this month onward?\nEarlier months keep it, with their expenses.`)) return;
     const err = this.store.removeCategory(name);
-    this.toast.show(err ?? `Removed "${name}"`, err ? 'err' : 'ok');
+    this.toast.show(err ?? `Removed "${name}" ✓`, err ? 'err' : 'ok');
   }
 
   protected save(): void {

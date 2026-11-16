@@ -2,6 +2,8 @@ export interface Category {
   name: string;
   color: string;
   icon: string;
+  /** Custom categories only: removed from this month (YYYY-MM) onward, still shown in earlier months. */
+  hiddenFrom?: string;
 }
 
 /** Built-in categories. User-added ones are stored separately (see BudgetStore). */
